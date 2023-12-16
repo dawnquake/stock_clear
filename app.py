@@ -1,11 +1,12 @@
 # app.py
-import dash
-from dash import html
-from dash.dependencies import Input, Output
-from dash import dcc
-from pages import product_page_en, home_page_en
+from dash import Dash, html, dash_table, dcc, callback, Output, Input
+import dash_bootstrap_components as dbc
 
-app = dash.Dash(__name__)
+
+from pages import product_page, home_page
+
+
+app = Dash(__name__, external_stylesheets=[dbc.themes.SLATE])
 server = app.server
 
 # Define app layout
@@ -19,12 +20,12 @@ app.layout = html.Div([
               [Input('url', 'pathname')])
 def display_page(pathname):
 
-
     if pathname == '/product_page':
-        return product_page_en.layout
+        return product_page.layout
+    
     else:
-        return home_page_en.layout
+        return home_page.layout
 
 # Run the app
 if __name__ == '__main__':
-    app.run_server(debug=False)
+    app.run_server(debug=True)
