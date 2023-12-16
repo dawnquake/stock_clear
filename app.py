@@ -6,6 +6,7 @@ from dash import dcc
 from pages import product_page_en, home_page_en
 
 app = dash.Dash(__name__)
+server = app.server
 
 # Define app layout
 app.layout = html.Div([
