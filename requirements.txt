@@ -1,3 +1,5 @@
 # Let the cloud provider manage the version here
 dash
 gunicorn
+pandas
+dash_bootstrap_components
