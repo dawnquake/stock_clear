@@ -1,4 +1,4 @@
-from dash import Dash, html, dash_table, dcc, callback, Output, Input
+from dash import Dash, html, dash_table, dcc, callback, Output, Input, State
 import dash_bootstrap_components as dbc
 
 footer_layout = [html.Footer([

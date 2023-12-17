@@ -1,0 +1,1 @@
+center_style = {"text-align": "center"}
