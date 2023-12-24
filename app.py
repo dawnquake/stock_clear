@@ -1,37 +1,42 @@
-# Have not figured out how to 
 # app.py
 
+# std imports
 import copy
 
+# data analytics imports
 import pandas as pd
 
+# dash imports
+import flask
 import dash
 from dash import Dash, html, dash_table, dcc, callback, Output, Input, State, dcc, clientside_callback
 import dash_bootstrap_components as dbc
+from dash.exceptions import PreventUpdate
 
+# Setting up the app and the server
 app = Dash(__name__,
-           external_stylesheets=[dbc.themes.JOURNAL], 
+           external_stylesheets=[dbc.themes.JOURNAL],
+           suppress_callback_exceptions=True, 
            use_pages=True)
 
 server = app.server
 app._favicon = 'box-fill.svg'
 
-def gen_app_layout(pages = dash.page_registry.values()):
+# layout generation through a function
+# Define callback to update page content based on URL
+# Initial layout
+# Define app layout
+app.layout = html.Div([
+    dcc.Location(id='url', refresh=False),
+    html.Div(id='page-content')
+])
 
-    layout =  html.Div([
-                html.H1('Multi-page app with Dash Pages'),
-                html.Div([
-                    html.Div(
-                        dcc.Link(f"{page['name']} - {page['path']}", href=page["relative_path"])
-                    ) for page in pages
-                ]),
-                
-                dash.page_container
-            ])
+products_db = pd.read_csv("db/products_db.csv", dtype=str)
+products_db['product_url'] = '/product/' + products_db['ProductID'].astype('string')
 
-    return layout
-
-app.layout = gen_app_layout(pages = dash.page_registry.values())
+app.layout = html.Div([
+    dash.page_container,
+])
 
 # Run the app
 if __name__ == '__main__':

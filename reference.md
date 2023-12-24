@@ -46,3 +46,9 @@ app = Dash(__name__,
            title = 'HomePage',
            )
 server = app.server
+
+html.Div([
+    html.Div(
+        dcc.Link(f"{page['name']} - {page['path']}", href=page["relative_path"])
+    ) for page in pages
+]),

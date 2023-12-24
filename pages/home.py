@@ -1,54 +1,103 @@
+# std imports
 import copy
+import glob
 
+# data analytics imports
 import pandas as pd
 
+# dash imports
 import flask
 import dash
-from dash import Dash, html, dash_table, dcc, callback, Output, Input, State, dcc, clientside_callback
+from dash import Dash, html, dash_table, dcc, callback, Output, Input, State, dcc, clientside_callback, dash_table
 import dash_bootstrap_components as dbc
 from dash.exceptions import PreventUpdate
 
+#local imports
+from pages.footer import footer_layout
+from pages.styles import center_style
+
+# import local settings for running server local
+# if import fail then on remote server
+ROOT_URL = 'https://www.alibabaro.com'
+try:
+    from pages.local_settings import LOCAL_URL
+    ROOT_URL = copy.deepcopy(LOCAL_URL)
+except:
+    pass
+
+# dash register page
+# Set the page title and path here
 dash.register_page(__name__, path='/', title = 'Homepage')
 
-layout = html.Div([
+# glob find the files for the homepage
+homepage_product_bar_1_paths = glob.glob('static/homepage/homepage_product_bar_1/*')
+homepage_product_bar_2_paths =  glob.glob('static/homepage/homepage_product_bar_2/*')
+homepage_product_bar_3_paths =  glob.glob('static/homepage/homepage_product_bar_3/*')
+homepage_carousel_paths = glob.glob('static/homepage/homepage_carousel/*')
+
+# creating the homepage carousel
+carousel = dbc.Carousel(
+    items=[
+        {'src': path} for path in homepage_carousel_paths
+    ],
+    controls=True,
+    indicators=True,
+    interval=1000,
+)
+
+# function for creating homepage product bar
+def create_product_bar(product_bar_image_paths,
+                       product_bar_title = ''):
+
+    product_bar = dbc.Container([
+        dbc.Row([html.H4(product_bar_title, style=center_style)]),
+        dbc.Row([
+            dbc.Col(html.Img(src=image, style={"width": "100%"}), width=2)  # Adjust width as needed
+            for image in product_bar_image_paths
+        ])
+    ])
+
+    return product_bar
+
+# Content for the home page
+main_content = [
 
 
     html.H1('This is our Home page'),
-    html.Div('This is our Home page content.'),
+
 
     ##########################################################
 
-    dcc.Input(id='url-input', type='text', value=''),
-    html.Button('Go', id='url-button'),
-    html.Div(id='url-output')
+    dcc.Input(id='search_phrase', type='text', value=''),
+    html.Button('Search', id='search_button'),
+    html.Div(id='url-output'),
 
     #########################################################
-])
 
+    dbc.Row(dbc.Col(carousel)),
+    create_product_bar(homepage_product_bar_1_paths, 'Product Bar 1'),
+    create_product_bar(homepage_product_bar_2_paths, 'Product Bar 2'),
+    create_product_bar(homepage_product_bar_3_paths, 'Product Bar 3'),
 
+]
+
+footer_content = footer_layout
+layout = html.Div(main_content + footer_content)
+
+# Callback for the search bar
 @callback(
     Output('url-output', 'children'),
-    [Input('url-button', 'n_clicks')],
-    [State('url-input', 'value')]
+    [Input('search_phrase', 'n_submit'),
+     Input('search_button', 'n_clicks')],
+    [State('search_phrase', 'value'),]
 )
-def redirect_url(n_clicks, url_input):
+def redirect_url( n_clicks, search_button, search_phrase,):
 
-    if n_clicks is None:
+    # print(n_clicks, search_button, search_phrase)
+    # print("{}/product_search?search_phrase={}".format(ROOT_URL, search_phrase))
+
+    if (n_clicks is None) and (search_button is None):
         raise PreventUpdate
 
-
-
-    if not url_input.startswith('http://') and not url_input.startswith('https://'):
-        url_input = 'http://' + url_input
-
-
-
-    print(url_input)
-
-
-    redirect_url = 'https://www.duckduckgo.com'
-
-    return dcc.Location(pathname="/archive", id="someid_doesnt_matter")
-
-if __name__ == '__main__':
-    app.run_server(debug=True)
+    return dcc.Location(href = "{}/product_search?search_phrase={}".format(ROOT_URL, search_phrase),
+                        id = 'nope0')
