@@ -38,3 +38,11 @@ def redirect_to_page(n_clicks, input_value):
         return dcc.Location(pathname=f'/product_page/{input_value}', id='redirect-url')
     else:
         return ""
+
+
+app = Dash(__name__, 
+           external_stylesheets=[dbc.themes.JOURNAL], 
+           suppress_callback_exceptions=True,                # Dynamic Pages needs this to be True to to work
+           title = 'HomePage',
+           )
+server = app.server
