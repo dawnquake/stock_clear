@@ -13,11 +13,23 @@ import dash_bootstrap_components as dbc
 from dash.exceptions import PreventUpdate
 
 #local imports
+from pages.header import *
 from pages.footer import footer_layout
-from pages.styles import center_style
+from pages.styles import *
+
+# import local settings for running server local
+# if import fail then on remote server
+ROOT_URL = 'https://www.alibabaro.com'
+try:
+    from pages.local_settings import LOCAL_URL
+    ROOT_URL = copy.deepcopy(LOCAL_URL)
+except:
+    pass
+
 
 # dash register page
 # Set the page title and path here
+# Read the db for the products
 dash.register_page(__name__,
                    path='/product_search', 
                    title = 'Product Page',
@@ -25,7 +37,18 @@ dash.register_page(__name__,
 
 products_db = pd.read_csv("db/products_db.csv", dtype=str)
 
+filter_element = [html.P("Here are the filter elements"),]
+
+filter_results = [html.P("Here are the results of the filter"),]
+
+# Creates the layout
 def layout(search_phrase = None, products_db = products_db):
+
+    ##########################################################
+    # Hidden dev for search bar redirect
+    search_redirect_hidden_dev = [html.Div(id='url-output'), ]
+    #########################################################
+    
 
     if search_phrase == None:
         search_phrase = ''
@@ -35,10 +58,11 @@ def layout(search_phrase = None, products_db = products_db):
     print(products_db)
 
     product_page_content = [
-        html.H3(f'This is the search phrase {search_phrase}'),
+        html.Div(id='url-output'), 
+        html.H3(f'You have searched for {search_phrase}'),
         dbc.Row([
-            dbc.Col([ html.P("Here are the filter elements") ]),
-            dbc.Col([ html.P("Here are the results of the filter") ]),
+            dbc.Col(filter_element),
+            dbc.Col(filter_results),
         ]),
 
     dash_table.DataTable(products_db.to_dict('records'),
@@ -46,9 +70,10 @@ def layout(search_phrase = None, products_db = products_db):
 
     ]
 
-    layout = html.Div(
-                    product_page_content
-                    + footer_layout)
+    layout = html.Div(header_layout 
+                      + product_page_content
+                      + search_redirect_hidden_dev
+                      + footer_layout)
 
     return layout
 

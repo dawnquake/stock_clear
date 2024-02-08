@@ -14,7 +14,8 @@ from dash.exceptions import PreventUpdate
 
 #local imports
 from pages.footer import footer_layout
-from pages.styles import center_style
+from pages.header import *
+from pages.styles import *
 
 # import local settings for running server local
 # if import fail then on remote server
@@ -45,6 +46,37 @@ carousel = dbc.Carousel(
     interval=1000,
 )
 
+# Header layout
+header_layout = [
+    html.Div([
+        dbc.Row([
+            dbc.Col(dbc.Input(id = 'search_phrase', type = 'text', size = 'lg'),
+                    width = {'size' : 5, 'offset' : 3},
+                    style = {'text-align':'right', 'padding': '0px'}),
+            dbc.Col(dbc.Button(children=btn0_content, id='search_button', size = 'lg'), style = {'padding': '0px'}),
+        ], justify = 'center'),
+    ]
+)]
+
+# Callback for the search bar
+@callback(
+    Output('url-output', 'children', allow_duplicate=True),
+    Input('search_phrase', 'n_submit'),
+    Input('search_button', 'n_clicks'),
+    State('search_phrase', 'value'),
+    prevent_initial_call = True,
+)
+def redirect_url(n_clicks, search_button, search_phrase):
+
+    # print(n_clicks, search_button, search_phrase)
+    # print("{}/product_search?search_phrase={}".format(ROOT_URL, search_phrase))
+
+    if (n_clicks is None) and (search_button is None):
+        raise PreventUpdate
+
+    return dcc.Location(href = "{}/product_search?search_phrase={}".format(ROOT_URL, search_phrase),
+                        id = 'nope0')
+
 # function for creating homepage product bar
 def create_product_bar(product_bar_image_paths,
                        product_bar_title = ''):
@@ -68,13 +100,11 @@ main_content = [
 
     ##########################################################
 
-    dcc.Input(id='search_phrase', type='text', value=''),
-    html.Button('Search', id='search_button'),
-    html.Div(id='url-output'),
+    html.Div(id='url-output'), 
 
     #########################################################
 
-    dbc.Row(dbc.Col(carousel)),
+    dbc.Row([dbc.Col(carousel, width = 6)], justify = 'center'),
     create_product_bar(homepage_product_bar_1_paths, 'Product Bar 1'),
     create_product_bar(homepage_product_bar_2_paths, 'Product Bar 2'),
     create_product_bar(homepage_product_bar_3_paths, 'Product Bar 3'),
@@ -82,22 +112,6 @@ main_content = [
 ]
 
 footer_content = footer_layout
-layout = html.Div(main_content + footer_content)
+layout = html.Div(header_layout + main_content + footer_content)
 
-# Callback for the search bar
-@callback(
-    Output('url-output', 'children'),
-    [Input('search_phrase', 'n_submit'),
-     Input('search_button', 'n_clicks')],
-    [State('search_phrase', 'value'),]
-)
-def redirect_url( n_clicks, search_button, search_phrase,):
 
-    # print(n_clicks, search_button, search_phrase)
-    # print("{}/product_search?search_phrase={}".format(ROOT_URL, search_phrase))
-
-    if (n_clicks is None) and (search_button is None):
-        raise PreventUpdate
-
-    return dcc.Location(href = "{}/product_search?search_phrase={}".format(ROOT_URL, search_phrase),
-                        id = 'nope0')

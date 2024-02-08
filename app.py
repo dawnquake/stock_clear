@@ -13,11 +13,20 @@ from dash import Dash, html, dash_table, dcc, callback, Output, Input, State, dc
 import dash_bootstrap_components as dbc
 from dash.exceptions import PreventUpdate
 
+# import local settings for running server local
+# if import fail then on remote server
+ROOT_URL = 'https://www.alibabaro.com'
+try:
+    from pages.local_settings import LOCAL_URL
+    ROOT_URL = copy.deepcopy(LOCAL_URL)
+except:
+    pass
+
 # Setting up the app and the server
 app = Dash(__name__,
-           external_stylesheets=[dbc.themes.JOURNAL],
+           external_stylesheets=[dbc.themes.CYBORG, dbc.icons.BOOTSTRAP],
            suppress_callback_exceptions=True, 
-           use_pages=True)
+           use_pages=True,)
 
 server = app.server
 app._favicon = 'box-fill.svg'
@@ -37,6 +46,8 @@ products_db['product_url'] = '/product/' + products_db['ProductID'].astype('stri
 app.layout = html.Div([
     dash.page_container,
 ])
+
+
 
 # Run the app
 if __name__ == '__main__':
