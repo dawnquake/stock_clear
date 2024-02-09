@@ -112,10 +112,11 @@ def gen_filter_results(min_price, max_price, URL):
         filter_results.extend([
             html.A(href = row['ProductLink'],
                    children = [dbc.Row([
-                        dbc.Col([html.Img(src=row['ProductImageLink'], style = {"maxWidth": "500px"})]),
+                        dbc.Col([html.Img(src=row['ProductImageLink'], width = 400, height = 300)], width = 3),
                         dbc.Col([html.H4(row['ProductName']),
-                                 html.H4(row['ProductPrice']), 
-                                 html.H4(row['ProductDesc'])], style={'text-align':'left'}),
+                                 html.P('Pretul Produsului       : {}'.format(row['ProductPrice'])), 
+                                 html.P('Descrierea Produsului   : {}'.format(row['ProductDesc']))]
+                                 , style={'text-align':'left'}),
                         ])
                    ]
             ),
