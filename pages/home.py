@@ -37,26 +37,15 @@ homepage_product_bar_3_paths =  glob.glob('static/homepage/homepage_product_bar_
 homepage_carousel_paths = glob.glob('static/homepage/homepage_carousel/*')
 
 # creating the homepage carousel
+lines = open('db/homepage_carousel_links.txt', 'r').read().splitlines()[1:]
+homepage_carousel_links = [ROOT_URL + '/{}'.format(line) for line in lines]
 carousel = dbc.Carousel(
-    items=[
-        {'src': path} for path in homepage_carousel_paths
-    ],
+    items=
+    [{'src': path,'href': link} for path, link in zip(homepage_carousel_paths, homepage_carousel_links)],
     controls=True,
     indicators=True,
     interval=1000,
 )
-
-# Header layout
-header_layout = [
-    html.Div([
-        dbc.Row([
-            dbc.Col(dbc.Input(id = 'search_phrase', type = 'text', size = 'lg'),
-                    width = {'size' : 5, 'offset' : 3},
-                    style = {'text-align':'right', 'padding': '0px'}),
-            dbc.Col(dbc.Button(children=btn0_content, id='search_button', size = 'lg'), style = {'padding': '0px'}),
-        ], justify = 'center'),
-    ]
-)]
 
 # Callback for the search bar
 @callback(
@@ -78,24 +67,32 @@ def redirect_url(n_clicks, search_button, search_phrase):
                         id = 'nope0')
 
 # function for creating homepage product bar
-def create_product_bar(product_bar_image_paths,
-                       product_bar_title = ''):
+def create_productbar(productbar_image_paths,
+                       productbar_link_paths,
+                       productbar_title = ''):
 
-    product_bar = dbc.Container([
-        dbc.Row([html.H4(product_bar_title, style=center_style)]),
-        dbc.Row([
-            dbc.Col(html.Img(src=image, style={"width": "100%"}), width=2)  # Adjust width as needed
-            for image in product_bar_image_paths
-        ])
+    lines = open(productbar_link_paths, 'r').read().splitlines()[1:]
+
+    productbar_links = [ROOT_URL + '/{}'.format(line) for line in lines]
+    productbar_title = dbc.Row([html.H4(productbar_title, style=center_style)])
+
+    productbar_content = []
+    for link, image in zip(productbar_links, productbar_image_paths):
+        productbar_content.append(dbc.Col([html.A(href=link, children=[html.Img(src=image, style = {'width':'100%'})])]))
+    productbar_content = dbc.Row(productbar_content)
+
+    productbar = dbc.Container([
+        productbar_title, productbar_content
     ])
 
-    return product_bar
+
+    return productbar
 
 # Content for the home page
 main_content = [
 
 
-    html.H1('This is our Home page'),
+    # html.H1('This is our Home page'),
 
 
     ##########################################################
@@ -105,9 +102,9 @@ main_content = [
     #########################################################
 
     dbc.Row([dbc.Col(carousel, width = 6)], justify = 'center'),
-    create_product_bar(homepage_product_bar_1_paths, 'Product Bar 1'),
-    create_product_bar(homepage_product_bar_2_paths, 'Product Bar 2'),
-    create_product_bar(homepage_product_bar_3_paths, 'Product Bar 3'),
+    create_productbar(homepage_product_bar_1_paths,'db/homepage_productbar1.txt', 'Produse Noi'),
+    create_productbar(homepage_product_bar_2_paths,'db/homepage_productbar2.txt', 'Produse Reduse'),
+    create_productbar(homepage_product_bar_3_paths,'db/homepage_productbar3.txt', 'Produse Remarkabile'),
 
 ]
 

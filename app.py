@@ -24,12 +24,13 @@ except:
 
 # Setting up the app and the server
 app = Dash(__name__,
-           external_stylesheets=[dbc.themes.CYBORG, dbc.icons.BOOTSTRAP],
+           external_stylesheets=[dbc.themes.LITERA, dbc.icons.BOOTSTRAP],
            suppress_callback_exceptions=True, 
            use_pages=True,)
 
 server = app.server
 app._favicon = 'box-fill.svg'
+app.title = 'Alibabaro' # prevent the appearance of Dash shortly after 
 
 # layout generation through a function
 # Define callback to update page content based on URL
@@ -46,8 +47,6 @@ products_db['product_url'] = '/product/' + products_db['ProductID'].astype('stri
 app.layout = html.Div([
     dash.page_container,
 ])
-
-
 
 # Run the app
 if __name__ == '__main__':

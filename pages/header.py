@@ -25,15 +25,26 @@ try:
 except:
     pass
 
+
 # Header layout
 header_layout = [
     html.Div([
+        # navbar,
         dbc.Row([
+            dbc.Col(html.A(
+                href=ROOT_URL,
+                children=[
+                    html.Img(
+                        src='/assets/ALIBABARO_LOGO_SVG.svg',   # Remember to add / in front of image here please
+                    )
+                ]
+            )),
             dbc.Col(dbc.Input(id = 'search_phrase', type = 'text', size = 'lg'),
-                    width = {'size' : 5, 'offset' : 3},
+                    width = {'size' : 5,},
                     style = {'text-align':'right', 'padding': '0px'}),
             dbc.Col(dbc.Button(children=btn0_content, id='search_button', size = 'lg'), style = {'padding': '0px'}),
         ], justify = 'center'),
+        html.Hr(),
     ]
 )]
 
