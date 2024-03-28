@@ -95,12 +95,6 @@ def gen_filter_results(min_price, max_price, URL):
         except:
             pass
 
-    
-
-
-
-
-
     filtered_df.reset_index(inplace = True)
 
 
@@ -112,11 +106,12 @@ def gen_filter_results(min_price, max_price, URL):
         filter_results.extend([
             html.A(href = row['ProductLink'],
                    children = [dbc.Row([
-                        dbc.Col([html.Img(src=row['ProductImageLink'], width = 400, height = 300)], width = 3),
+                        dbc.Col([html.Img(src=row['ProductImageLink'], style = desktop_product_search_image_style)]),
                         dbc.Col([html.H4(row['ProductName']),
+                                 html.P('Codul Produsului        : {}'.format(row['ProductID'])), 
                                  html.P('Pretul Produsului       : {}'.format(row['ProductPrice'])), 
                                  html.P('Descrierea Produsului   : {}'.format(row['ProductDesc']))]
-                                 , style={'text-align':'left'}),
+                                 , style={'text-align':'left'}, width = 9),
                         ])
                    ]
             ),

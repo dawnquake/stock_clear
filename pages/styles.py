@@ -27,3 +27,12 @@ search_bar_style = {
 # html for Icon only 
 btn0_content = html.Span([html.Div('', style = dict(paddingRight = '0.5vw', display = 'inline-block')),
                           html.I(className = 'bi bi-search' , style=dict(display='inline-block'))])
+
+# image style
+# Style all images to be 600 width and 800 height
+# Autoscale image if not 600 width and 800 height
+desktop_product_search_image_style = {
+'width': '300px',
+'height': '400px',
+# 'object-fit': 'contain'  # This property prevents the image from being cropped
+}

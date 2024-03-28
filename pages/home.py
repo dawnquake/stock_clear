@@ -47,6 +47,20 @@ carousel = dbc.Carousel(
     interval=1000,
 )
 
+homepage_left_nav = ['Pantalon', 'Compleu', 'Tricou']
+
+table_header = [html.Thead(html.Tr([html.Th("Produse")]))]
+table_body = [html.Tbody([
+    html.Tr([html.Td(html.A(html.P('Pantalon'), href='{}/product_search?search_phrase={}'.format(ROOT_URL, 'Pantalon'))) ]),
+    html.Tr([html.Td(html.A(html.P('Compleu'), href='{}/product_search?search_phrase={}'.format(ROOT_URL, 'Compleu'))) ]),
+    html.Tr([html.Td(html.A(html.P('Tricou'), href='{}/product_search?search_phrase={}'.format(ROOT_URL, 'Tricou'))) ]),
+    html.Tr([html.Td(html.A(html.P('Geaca'), href='{}/product_search?search_phrase={}'.format(ROOT_URL, 'Geaca'))) ]),
+    html.Tr([html.Td(html.A(html.P('Fusta'), href='{}/product_search?search_phrase={}'.format(ROOT_URL, 'Fusta'))) ]),
+    html.Tr([html.Td(html.A(html.P('Trening'), href='{}/product_search?search_phrase={}'.format(ROOT_URL, 'Trening'))) ]),
+] )]
+
+table = dbc.Table(table_header + table_body, bordered=True)
+
 # Callback for the search bar
 @callback(
     Output('url-output', 'children', allow_duplicate=True),
@@ -101,7 +115,9 @@ main_content = [
 
     #########################################################
 
-    dbc.Row([dbc.Col(carousel, width = 6)], justify = 'center'),
+    dbc.Row([dbc.Col(table, width = 2),
+             dbc.Col(carousel, width = 8)],
+            justify = 'center'),
     create_productbar(homepage_product_bar_1_paths,'db/homepage_productbar1.txt', 'Produse Noi'),
     create_productbar(homepage_product_bar_2_paths,'db/homepage_productbar2.txt', 'Produse Reduse'),
     create_productbar(homepage_product_bar_3_paths,'db/homepage_productbar3.txt', 'Produse Remarkabile'),
