@@ -1,16 +1,5 @@
 ProductID,ProductName,ProductPrice,ProductDesc
-1000001,Jacheta,20,This is a jacket
-1000020,Tricou,12,This is a tricou
-1000030,Pantalon,15,This is a pantalon
-1000050,Fusta,56,This is a fusta
-1000053,Jacheta B,50,Jacheta B
-1000090,Pantalon B,40,Pantalon B
-1000012,Compleu,100,This is a compleu
-1000123,Tricou C,200,Tricou C
-1000256,Trening,30,This is a Trening
-2024001,Geaca,50,Mare
-2024p,Pantalon,48,Pantaloni scurti marime plus
-20240821,Tricou Gros,15,Pret Recomandat 12 - 15 RON
+202408210000,Tricou Gros,15,Pret Recomandat 12 - 15 RON
 202408220859,Trenci cu jacheta reversibila,40,4 culori Marimea M ~ 3XL
 202408220918,Topuri polare pentru bărbați,25,3 culori Mărimea M ~ 3XL
 202408220920,Top femei 20543,35,7 culori Mărimea M ~ 3XL

@@ -1,5 +1,5 @@
 主页BAR1
-product/1000001
-product/1000020
-product/1000030
-product/2024001
+product/202408220947
+product/202408220959
+product/202408221004
+product/202408221005
